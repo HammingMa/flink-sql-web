@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>flink-sql</title>
+    <link rel="stylesheet" href="CodeMirror/lib/codemirror.css">
+    <script src="CodeMirror/lib/codemirror.js"></script>
+    <script src="CodeMirror/model/sql/sql.js"></script>
+
+    <script>
+
+    </script>
+</head>
+<body>
+<h2>flink-sql</h2>
+<a>任务名</a>
+<input type="text" id="jobName">
+<button id="save" onclick="save()">保存</button>
+<button id="run" onclick="run()">运行</button>
+<!-- begin code -->
+<textarea id="code" class="form-control"  ></textarea>
+<!-- end code-->
+</body>
+
+<script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        mode:"sql",// 语言模式
+        lineNumbers:true,
+        lineSeparator:'<br />'
+    });
+    editor.setSize('99%','99%');
+    // editor.setOption('border-color','#719ECE');
+    // editor.setOption('border','1px solid');
+
+    function save() {
+
+        var jobName = document.getElementById("jobName").value;
+        //alert(jobName);
+        var sqls = editor.getValue()
+         alert(sqls);
+        // console.log(sqls)
+
+        var httpRequest = new XMLHttpRequest();//第一步：创建需要的对象
+        httpRequest.open('POST', "/saveJobInfo?jobName=" + jobName + "&sqls=" + sqls, true); //第二步：打开连接
+        httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");//设置请求头 注：post方式必须设置请求头（在建立连接后设置请求头）
+        httpRequest.send();//发送请求 将情头体写在send中
+
+        alert(1111)
+
+        httpRequest.onreadystatechange = function () {//请求后的回调接口，可将请求成功后要执行的程序写在其中
+            if (httpRequest.readyState == 4 && httpRequest.status == 200) {//验证请求是否发送成功
+                var msg = httpRequest.responseText;//获取到服务端返回的数据
+                alert(msg)
+            }
+        };
+
+
+    }
+
+    function run() {
+
+        var jobName = document.getElementById("jobName").value;
+        //alert(jobName);
+        var sqls = editor.getValue()
+        // alert(sqls);
+        // console.log(sqls)
+
+        var httpRequest = new XMLHttpRequest();//第一步：创建需要的对象
+        httpRequest.open('POST', "/runJob?jobName=" + jobName + "&sqls=" + sqls, true); //第二步：打开连接
+        httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");//设置请求头 注：post方式必须设置请求头（在建立连接后设置请求头）
+        httpRequest.send();//发送请求 将情头体写在send中
+
+
+        httpRequest.onreadystatechange = function () {//请求后的回调接口，可将请求成功后要执行的程序写在其中
+            if (httpRequest.readyState == 4 && httpRequest.status == 200) {//验证请求是否发送成功
+                var msg = httpRequest.responseText;//获取到服务端返回的数据
+                alert(msg)
+            }
+        };
+
+
+    }
+
+</script>
+</html>

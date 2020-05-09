@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mzh.sqlweb.mapper.JobInfoMapper" >
+
+    <resultMap id="BaseResultMap" type="com.mzh.sqlweb.bean.JobInfoBean" >
+        <result column="id" property="id" jdbcType="CHAR"/>
+        <result column="job_name" property="jobName" jdbcType="CHAR"/>
+        <result column="sqls" property="sqls" jdbcType="CHAR"/>
+    </resultMap>
+
+    <parameterMap id="jobInfo" type="com.mzh.sqlweb.bean.JobInfoBean">
+        <parameter property="id" resultMap="BaseResultMap" />
+        <parameter property="jobName" resultMap="BaseResultMap" />
+        <parameter property="sqls" resultMap="BaseResultMap" />
+    </parameterMap>
+
+    <insert id="addJobInfo" parameterType="java.lang.String">
+        replace into job_info (job_name,sqls) values (#{jobName},#{sqls})
+    </insert>
+
+
+</mapper>
